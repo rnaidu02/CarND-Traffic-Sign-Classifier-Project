@@ -185,6 +185,7 @@ Here is an image that shows the probabilites of predictions for all of the 10 im
 #### 1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
 Cell 58 & 59 shows the code and visualizations for feature maps for 3 convolution layers for stop sign image - one for image I downloaded from web and the other from training set.
 
+##### Visualizations for Stop sign that is correctly predicted
 Here is the feature map visualization along with actual image for Stop sign downloaded from Web.
 ![Feature maps for Stop sign from web](./writeup_imgs/stop_sign_web_feature_maps.png) 
 
@@ -193,6 +194,7 @@ Here is the feature map visualization along with actual image for Stop sign from
 
 This image is predicted correctly with the trained model. As you can see from conv1 layer feature maps, both for trained image and image from we, the feature maps looks similar and the edges of the stop sign can be seen distinctly similar. I have printed both conv2 and conv3 feature maps as well. conv3 size is 2x2x256 and it hard to visualize the similarity with human eye.
 
+##### Visualizations for Speed Limit sign that is wrongly predicted
 Here is the feature map visualization along with actual image for Speed limit 70 km/h sign downloaded from Web.
 ![Feature maps for Stop sign from web](./writeup_imgs/speed_70_web_feature_maps.png) 
 
