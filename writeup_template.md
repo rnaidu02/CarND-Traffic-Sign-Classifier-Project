@@ -105,29 +105,17 @@ My final model results were:
 
 Initially I've tried with LeNet (with 2 conv, 2 FC layers) and the original training set provided. With this combination I was getting about 81% accuracy at its best with a combination of batch size and learning rate. After trying out different learning rates (within the ranges of 0.0001 to 0.01), I 've decided to stick with 0.005 which gave me the desired validation accuracy within reasonable amount of ecpochs and training time. Also I've experimented with batch sizes. Batch size also seems to have impact with the validation accuracy. With smaller batch sizes it is not converging that fast and the validation accuracy is not even reaching 81%.
 
-For first thing I tried is to change/improve the existing LeNet architecture by adding more depth to the kernels and also add more layers so that additional features can be extracted. The reason why I took this approach is that LeNet worked best on mnist dataset (which is grayscale images). Since the traffic sign dataset is in color and by having more conv kernels with more conv layers will help in extracting the features. Here I tried different depths for the conv kernels. These changes improved the validation accuracy to around 90% and not beyond. The code for this network architecture is in cell# 10 of my ![notebook] (https://github.com/rnaidu02/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb). To not to overfit with the training set, I 've added a dropout layer with 0.5 probability at the 2nd fully connected layer weights.
+For first thing I tried is to change/improve the existing LeNet architecture by adding more depth to the kernels and also add more layers so that additional features can be extracted. The reason why I took this approach is that LeNet worked best on mnist dataset (which is grayscale images). Since the traffic sign dataset is in color and by having more conv kernels with more conv layers will help in extracting the features. Here I tried different depths for the conv kernels. These changes improved the validation accuracy to around 90% and not beyond. The code for this network architecture is in cell# 9 of my ![notebook] (https://github.com/rnaidu02/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb). To not to overfit with the training set, I 've added a dropout layer with 0.5 probability at the 2nd fully connected layer weights.
 
 At this time I though I should focus on the training content to improve the validation accuracy. As a first attempt I would like to use existing frameworks to have image augmentation and I found Keras as one source to begin with. After spending good amount of time on adding ZCA filter, random shifts, Feature standradization techniques on the existing training set, the training set became around 100k, but the accuracy didn't jump reach consistent 93% everytime. It is also taking very long time for the image augmentation using jeras (much longer than 100 epochs of training). When looking to visualize the output images after the augmentation techniques, the output for ZCA filter is mot looking good as well. For the above reasons, I looked for alternatives and found open cv has some api that can be used for image augmentation. I have appllied 7 different disctoprtions/enhancements to the existing training set and was able to get about 150k images (details on the spread is described in section 1 of the writeup).
 
 After the image augmentated training set with 150k samples, with the enhanced LeNet arhitecture, the results are promising. I was able to get around 96% for validation accuracy and 99.7% for training accuracy within 50 epochs.
 
 
-With the network (modified LeNet) I chose, I was able to get a validation accuracy of 96%, and testing accuracy of 94%. From this data, I beleive that the model is not overfitting with the training set and is doing a reasonable job.
+With the network (modified LeNet) I chose, I was able to get a validation accuracy of 96%, and testing accuracy of 94%. From this data, I beleive that the model is not overfitting with the training set and is doing a reasonable job. However when I train multiple times to see if it is consistent, the training, validation and test set accuracies are very similar. However I see the 10 images I downloaded from the web has predictions not the same everytime the model is trained. This seems to be an issue I see. 
 
 
-To get around 
-If an iterative approach was chosen:
-* What was the first architecture that was tried and why was it chosen?
-* What were some problems with the initial architecture?
-* How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to overfitting or underfitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
-* Which parameters were tuned? How were they adjusted and why?
-* What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
 
-If a well known architecture was chosen:
-* What architecture was chosen?
-* Why did you believe it would be relevant to the traffic sign application?
-* How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
- 
 
 ### Test a Model on New Images
 
@@ -167,7 +155,7 @@ Predictions of the 10 test images from the Web:
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 18, 19, and 20 th cell of the Ipython notebook (https://github.com/rnaidu02/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb).
+The code for making predictions on my final model is located in the 36, 37, and 38 th cell of the Ipython notebook (https://github.com/rnaidu02/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb).
 
 For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
 
@@ -194,6 +182,24 @@ Here is an image that shows the probabilites of predictions for all of the 10 im
 ![Predictions with probabilities](./writeup_imgs/test_web_images_detail_results.png)
 
 ### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
-####1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
+#### 1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
+Cell 58 & 59 shows the code and visualizations for feature maps for 3 convolution layers for stop sign image - one for image I downloaded from web and the other from training set.
 
+Here is the feature map visualization along with actual image for Stop sign downloaded from Web.
+![Feature maps for Stop sign from web](./writeup_imgs/stop_sign_web_feature_maps.png) 
+
+Here is the feature map visualization along with actual image for Stop sign from Training set.
+![Feature maps for Stop sign from web](./writeup_imgs/stop_sign_train_feature_maps.png) 
+
+This image is predicted correctly with the trained model. As you can see from conv1 layer feature maps, both for trained image and image from we, the feature maps looks similar and the edges of the stop sign can be seen distinctly similar. I have printed both conv2 and conv3 feature maps as well. conv3 size is 2x2x256 and it hard to visualize the similarity with human eye.
+
+Here is the feature map visualization along with actual image for Speed limit 70 km/h sign downloaded from Web.
+![Feature maps for Stop sign from web](./writeup_imgs/speed_70_web_feature_maps.png) 
+
+Here is the feature map visualization along with actual image for Speed limit 70 km/h sign from Training set.
+![Feature maps for Stop sign from web](./writeup_imgs/speed_70_train_feature_maps.png) 
+
+This image is not predicted correctly. After looking at the feature maps dumped for different trained images for Speed limit 70km/h signs and the one that is downloaded from web, conv1 feature maps look very different and there is no simlarity. I see the edges clearly within the conv1 feature maps for Speed limit sign downloaded from the web, whereas for Speed sign from traning set, the features are not distinctly defined within conv1 features. I think the issue could be related to the quality of the trained images. If I repalce the existing Speed limit 70 km/h images from training set with enhanced images (sharpened, remove the darkness by applying equalise histograms etc) may result in better recognition.
+
+The visualization of feature maps could be a debug mechanism to determine why the predictions are not right even the training and validation error is high.
 
