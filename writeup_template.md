@@ -70,13 +70,19 @@ After image augmentation, the range of samples within each class became 1440 to 
 I used the following techniques
 
 - Random noise: Used Gaussian noise to introduce some noise to the training images as additional data point. Here I've used skimage.util.random_noise() function to introduce random noise.
-- Sharpen Image: 
-- 
- 
+- Sharpen Image: Sharpen the image by taking deducting the Gaussian blur kernel (3x3) from the image.
+- Rotate image by 10 degrees clock wise: Rotate the image to simulate the condition where the traffic sign was captured with a slight angle.
+- Rotate image by 10 degrees counter clock wise: Rotate the image to simulate the condition where the traffic sign was captured with a slight angle.
+- Shift the image towards bottom-right: Shift the image to simlate the condition that the captured traffic sign was at one of the corner.
+- Shift the image towards top-left: Shift the image to simlate the condition that the captured traffic sign was at one of the corner.
+- Enhance the image: I've seen many of the training images are  very dark and hardly can see the traffic signs. I've used Equlize histograms to enhance the image.
 
-Here is an example of an original image and an augmented image:
 
-![alt text][image3]
+Here is an example of an original image and augmented images as described above:
+
+![Class 0 Image with augmented images](./writeup_imgs/image_aug_1.png)
+![Class 1 Image with augmented images](./writeup_imgs/image_aug_2.png)
+![Class 3 Image with augmented images](./writeup_imgs/image_aug_3.png)
 
 The difference between the original data set and the augmented data set is the following ... 
 
