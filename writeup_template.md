@@ -111,7 +111,6 @@ At this time I though I should focus on the training content to improve the vali
 
 After the image augmentated training set with 150k samples, with the enhanced LeNet arhitecture, the results are promising. I was able to get around 96% for validation accuracy and 99.7% for training accuracy within 50 epochs.
 
-Just to try a different architecture, I've tried to create a network with inception layers after 2 conv layers and the validation accuracy reached 94% even with the original training set without any image augmentation. The code for this is in cell #9 of the notebook ![notebook] (https://github.com/rnaidu02/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb). I didn't continue on this as I want to achive desired accuracy with a simple network (LeNet).
 
 With the network (modified LeNet) I chose, I was able to get a validation accuracy of 96%, and testing accuracy of 94%. From this data, I beleive that the model is not overfitting with the training set and is doing a reasonable job.
 
@@ -137,7 +136,7 @@ If a well known architecture was chosen:
 Here are ten German traffic signs that I found on the web:
 
 ![Turn right](./test_imgs/img6.jpeg) ![Caution](./test_imgs/img1.jpeg) ![speed 60](./test_imgs/img7.jpeg) ![Children crossing](./test_imgs/img4.jpeg) ![Road work](./test_imgs/img_at_work.jpeg)
-![Yield](./test_imgs/img5.jpeg) ![Priority Road](./test_imgs/img_diamond.jpeg) ![speed 70](./test_imgs/img_70_speed) ![Go straight/right](./test_imgs/img_right_turn.jpeg) ![Stop](./test_imgs/img2.jpeg)
+![Yield](./test_imgs/img5.jpeg) ![Priority Road](./test_imgs/img_diamond.jpeg) ![speed 70](./test_imgs/img_70_speed.jpeg) ![Go straight/right](./test_imgs/img_right_turn.jpeg) ![Stop](./test_imgs/img2.jpeg)
 
 The Ninth image (Go straight/right) might be difficult to classify because it can be often be confused with the Turn right (First image). With 28x28 source image and the poor quality of initial training set images, it is quite possible that this can heppen.
 
