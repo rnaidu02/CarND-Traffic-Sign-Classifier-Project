@@ -1,42 +1,10 @@
 #**Traffic Sign Recognition** 
 
-## Writeup Template
-
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
-
-**Build a Traffic Sign Recognition Project**
-
-The goals / steps of this project are the following:
-* Load the data set (see below for links to the project data set)
-* Explore, summarize and visualize the data set
-* Design, train and test a model architecture
-* Use the model to make predictions on new images
-* Analyze the softmax probabilities of the new images
-* Summarize the results with a written report
-
-
-[//]: # (Image References)
-
-[image1]: ./examples/visualization.jpg "Visualization"
-[image2]: ./examples/grayscale.jpg "Grayscaling"
-[image3]: ./examples/random_noise.jpg "Random Noise"
-[image4]: ./examples/placeholder.png "Traffic Sign 1"
-[image5]: ./examples/placeholder.png "Traffic Sign 2"
-[image6]: ./examples/placeholder.png "Traffic Sign 3"
-[image7]: ./examples/placeholder.png "Traffic Sign 4"
-[image8]: ./examples/placeholder.png "Traffic Sign 5"
-
-## Rubric Points
-### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
-
----
 ### Writeup / README
 
 #### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
 
-You're reading it! and here is a link to my [project code](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+Here is the link to my [project code](https://github.com/rnaidu02/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
 
 ### Data Set Summary & Exploration
 
@@ -169,8 +137,11 @@ If a well known architecture was chosen:
 Here are ten German traffic signs that I found on the web:
 
 ![Turn right](./test_imgs/img6.jpeg) ![Caution](./test_imgs/img1.jpeg) ![speed 60](./test_imgs/img7.jpeg) ![Children crossing](./test_imgs/img4.jpeg) ![Road work](./test_imgs/img_at_work.jpeg)
+![Yield](./test_imgs/img5.jpeg) ![Priority Road](./test_imgs/img_diamond.jpeg) ![speed 70](./test_imgs/img_70_speed) ![Go straight/right](./test_imgs/img_right_turn.jpeg) ![Stop](./test_imgs/img2.jpeg)
 
-The first image might be difficult to classify because ...
+The Ninth image (Go straight/right) might be difficult to classify because it can be often be confused with the Turn right (First image). With 28x28 source image and the poor quality of initial training set images, it is quite possible that this can heppen.
+
+Also I feel that the speed 60/70 signs also can be mis classified due to closeness in its shape and digits.
 
 #### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
@@ -178,31 +149,50 @@ Here are the results of the prediction:
 
 | Image			        |     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Stop Sign      		| Stop sign   									| 
-| U-turn     			| U-turn 										|
-| Yield					| Yield											|
-| 100 km/h	      		| Bumpy Road					 				|
-| Slippery Road			| Slippery Road      							|
+| Turn right      		| Turn right 		| 
+| General Caution     		| General Caution |
+| Speed Limit 60     		| Speed Limit 60 |
+| Children crossing     	| Children crossing |
+| Road work     		| Road work  |
+| Yield				| Dangerous curve to the left| 
+| Priority road			|  Priority road |
+| Speed Limit 70	      	| Keep right	|
+| Go straight or right		| Go straight or right  | 
+| Stop				| Stop  |   							
 
 
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
+The model was able to correctly guess 8 of the 10 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of 12630. Since the sample of 10 is very less and may not provide the accurate estimate of the model. Also the images from web are with different sizes and resizing them to small size of 32x32 will also may loose some of the details.
+
+Predictions of the 10 test images from the Web:
+![Predictions of the 10 test images](./writeup_imgs/test_web_images_results.png)
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+The code for making predictions on my final model is located in the 18, 19, and 20 th cell of the Ipython notebook (https://github.com/rnaidu02/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb).
 
 For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+| 1.0         			| Turn right ahead   									| 
+| 0.0     				| Round about manadatory 										|
+| 0.0					| Speed limit (20 km/h)											|
+| 0.0	      			| Speed limit (30 km/h)					 				|
+| 0.0				    | Speed limit (50 km/h)      							|
 
 
-For the second image ... 
+I will also detail the predictions for an image that is mis classified. For the eight image which is supposed to be 'Speed limit (70km/h)' - that is classified as Tield sign. Here the right classification has only 0.05 probability in the prediction.
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 0.95         			| Yield   									| 
+| 0.05     				| Speed limit (70 km/h) 										|
+| 0.0					| Keep right)											|
+| 0.0	      			| Go straight					 				|
+| 0.0				    | Speed limit (20 km/h)      							| 
+
+Here is an image that shows the probabilites of predictions for all of the 10 images that were tested
+![Predictions with probabilities](./writeup_imgs/test_web_images_detail_results.png)
 
 ### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
 ####1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
