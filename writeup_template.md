@@ -133,17 +133,17 @@ My final model results were:
 * validation set accuracy of 0.962 
 * test set accuracy of 0.939
 
-[Training/Validation Accuracy with 100 epochs] (./writeup_imgs/training_image.png)
+![Training/Validation Accuracy with 100 epochs](./writeup_imgs/training_image.png)
 
 Initially I've tried with LeNet (with 2 conv, 2 FC layers) and the original training set provided. With this combination I was getting about 81% accuracy at its best with a combination of batch size and learning rate. After trying out different learning rates (within the ranges of 0.0001 to 0.01), I 've decided to stick with 0.005 which gave me the desired validation accuracy within reasonable amount of ecpochs and training time. Also I've experimented with batch sizes. Batch size also seems to have impact with the validation accuracy. With smaller batch sizes it is not converging that fast and the validation accuracy is not even reaching 81%.
 
-For first thing I tried is to change/improve the existing LeNet architecture by adding more depth to the kernels and also add more layers so that additional features can be extracted. The reason why I took this approach is that LeNet worked best on mnist dataset (which is grayscale images). Since the traffic sign dataset is in color and by having more conv kernels with more conv layers will help in extracting the features. Here I tried different depths for the conv kernels. These changes improved the validation accuracy to around 90% and not beyond. The code for this network architecture is in cell# 10 of my [notebook] (https://github.com/rnaidu02/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb). To not to overfit with the training set, I 've added a dropout layer with 0.5 probability at the 2nd fully connected layer weights.
+For first thing I tried is to change/improve the existing LeNet architecture by adding more depth to the kernels and also add more layers so that additional features can be extracted. The reason why I took this approach is that LeNet worked best on mnist dataset (which is grayscale images). Since the traffic sign dataset is in color and by having more conv kernels with more conv layers will help in extracting the features. Here I tried different depths for the conv kernels. These changes improved the validation accuracy to around 90% and not beyond. The code for this network architecture is in cell# 10 of my ![notebook] (https://github.com/rnaidu02/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb). To not to overfit with the training set, I 've added a dropout layer with 0.5 probability at the 2nd fully connected layer weights.
 
 At this time I though I should focus on the training content to improve the validation accuracy. As a first attempt I would like to use existing frameworks to have image augmentation and I found Keras as one source to begin with. After spending good amount of time on adding ZCA filter, random shifts, Feature standradization techniques on the existing training set, the training set became around 100k, but the accuracy didn't jump reach consistent 93% everytime. It is also taking very long time for the image augmentation using jeras (much longer than 100 epochs of training). When looking to visualize the output images after the augmentation techniques, the output for ZCA filter is mot looking good as well. For the above reasons, I looked for alternatives and found open cv has some api that can be used for image augmentation. I have appllied 7 different disctoprtions/enhancements to the existing training set and was able to get about 150k images (details on the spread is described in section 1 of the writeup).
 
 After the image augmentated training set with 150k samples, with the enhanced LeNet arhitecture, the results are promising. I was able to get around 96% for validation accuracy and 99.7% for training accuracy within 50 epochs.
 
-Just to try a different architecture, I've tried to create a network with inception layers after 2 conv layers and the validation accuracy reached 94% even with the original training set without any image augmentation. The code for this is in cell #9 of the notebook [notebook] (https://github.com/rnaidu02/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb). I didn't continue on this as I want to achive desired accuracy with a simple network (LeNet).
+Just to try a different architecture, I've tried to create a network with inception layers after 2 conv layers and the validation accuracy reached 94% even with the original training set without any image augmentation. The code for this is in cell #9 of the notebook ![notebook] (https://github.com/rnaidu02/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb). I didn't continue on this as I want to achive desired accuracy with a simple network (LeNet).
 
 With the network (modified LeNet) I chose, I was able to get a validation accuracy of 96%, and testing accuracy of 94%. From this data, I beleive that the model is not overfitting with the training set and is doing a reasonable job.
 
@@ -168,7 +168,7 @@ If a well known architecture was chosen:
 
 Here are ten German traffic signs that I found on the web:
 
-![Turn right][./test_imgs/img6.jpeg] ![Caution][./test_imgs/img1.jpeg] ![speed 60][./test_imgs/img7.jpeg] ![Children crossing][./test_imgs/img4.jpeg] ![Road work][./test_imgs/img_at_work.jpeg]
+![Turn right](./test_imgs/img6.jpeg) ![Caution](./test_imgs/img1.jpeg) ![speed 60](./test_imgs/img7.jpeg) ![Children crossing](./test_imgs/img4.jpeg) ![Road work](./test_imgs/img_at_work.jpeg)
 
 The first image might be difficult to classify because ...
 
