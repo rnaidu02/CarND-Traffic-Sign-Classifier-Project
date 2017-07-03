@@ -57,9 +57,9 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 
 ![Classes spread within the training set](./writeup_imgs/classes_spread.png)
 
-###Design and Test a Model Architecture
+### Design and Test a Model Architecture
 
-####1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
+#### 1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
 
 As a first step, I decided to add more data to the the data set to make the classes with fewer samples to have more so that they will have more representation in the training set and also to have more samples for all the classes with different distortions and enhancements. If the class has less than 500 samples in the training set, then I've generated image augmentation (7 effects) to all of the samples. This means if the class has fewwer than 500 samples in the initial training set, then it's count will increase by 7x of its initial count. If the class has more than 500 then I've applied only 500 randomly selected images for image augmentation. This approach gives me more samples and at the same time reduce the inequality of distribution between classes with more and fewer samples.
 
@@ -84,39 +84,71 @@ Here is an example of an original image and augmented images as described above:
 ![Class 1 Image with augmented images](./writeup_imgs/image_aug_2.png)
 ![Class 3 Image with augmented images](./writeup_imgs/image_aug_3.png)
 
-The difference between the original data set and the augmented data set is the following ... 
+The difference between the original data set and the augmented data set is the following:
+- The number of training images went up from ~35k to ~150k.
+- The number of images in classes that are significantly small are increased by ~8x in augmented data set.
+- Various distortions and enhancements (as described above) to the images were introduced in the augmented data set. 
 
 
-As a last step, I normalized the image data because ...
-####2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
+As a last step, I normalized the image data because
+      I want the values to be in a small range so that the relu layer wouldn't keep the at 1 most of the time (as the range of pixel values are 0 - 255). For this reason, I normalized the pixel values within the range of 0 - 1 by dividing the pixel values by 255. I kept the three color channel intact so as to preserve the color and I beleive the color could playa role in the identification of a traffic sign.
+
+#### 2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
 My final model consisted of the following layers:
 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | Input         		| 32x32x3 RGB image   							| 
-| Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x64 	|
+| Convolution 5x5     	| 1x1 stride, VALID padding, outputs 28x28x3 	|
 | RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 16x16x64 				|
-| Convolution 3x3	    | etc.      									|
-| Fully connected		| etc.        									|
-| Softmax				| etc.        									|
-|						|												|
-|						|												|
+| Max pooling	      	| 2x2 stride,  outputs 14x14x3 				|
+| Convolution 5x5     	| 1x1 stride, VALID padding, outputs 10x10x32 	|
+| RELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 5x5x32 				|
+| Convolution 3x3     	| 1x1 stride, VALID padding, outputs 3x3x256 	|
+| RELU					|												|
+| Max pooling	      	| 1x1 stride,  outputs 2x2x256 				|
+| Fully connected	|   outputs 1x1024					|
+RELU					|												|
+| Fully connected	|   outputs 1x512					|
+RELU					|												|
+Dropout					| dropout= 0.5												|
+| Softmax				| outputs 1x43        												|
  
 
 
-####3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
+#### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
-To train the model, I used an ....
+To train the model, I used a modified version of LeNet (By having more kenels (depth) of sizes 5x5 and 3x3. I've added 3 conv layers, 2 Fully connected layers and the dropout layer at the end - before logits layer.
 
-####4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
+The batch size I used was 128. I've a nVidia GPU on my system and was able to train with batch 128 very well.
+Number of epochs chosen are 100. Though it is reaching 93% validation accuracy within 50 epochs, I tried 100 epochs to see how much higher the training and validation accuracy go.
+Learning rate I chose was 0.0005. I've played with learning rate of 0.0001 to 0.01. This learning rate gives me the best performance in terms of validation accuracy. The higher the learning rate, the validation accuracy floats around after a certain point and doesn't increase as with the learning rate of 0.0005.
+
+#### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
 My final model results were:
-* training set accuracy of ?
-* validation set accuracy of ? 
-* test set accuracy of ?
+* training set accuracy of 0.997
+* validation set accuracy of 0.962 
+* test set accuracy of 0.939
 
+[Training/Validation Accuracy with 100 epochs] (./writeup_imgs/training_image.png)
+
+Initially I've tried with LeNet (with 2 conv, 2 FC layers) and the original training set provided. With this combination I was getting about 81% accuracy at its best with a combination of batch size and learning rate. After trying out different learning rates (within the ranges of 0.0001 to 0.01), I 've decided to stick with 0.005 which gave me the desired validation accuracy within reasonable amount of ecpochs and training time. Also I've experimented with batch sizes. Batch size also seems to have impact with the validation accuracy. With smaller batch sizes it is not converging that fast and the validation accuracy is not even reaching 81%.
+
+For first thing I tried is to change/improve the existing LeNet architecture by adding more depth to the kernels and also add more layers so that additional features can be extracted. The reason why I took this approach is that LeNet worked best on mnist dataset (which is grayscale images). Since the traffic sign dataset is in color and by having more conv kernels with more conv layers will help in extracting the features. Here I tried different depths for the conv kernels. These changes improved the validation accuracy to around 90% and not beyond. The code for this network architecture is in cell# 10 of my [notebook] (https://github.com/rnaidu02/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb). To not to overfit with the training set, I 've added a dropout layer with 0.5 probability at the 2nd fully connected layer weights.
+
+At this time I though I should focus on the training content to improve the validation accuracy. As a first attempt I would like to use existing frameworks to have image augmentation and I found Keras as one source to begin with. After spending good amount of time on adding ZCA filter, random shifts, Feature standradization techniques on the existing training set, the training set became around 100k, but the accuracy didn't jump reach consistent 93% everytime. It is also taking very long time for the image augmentation using jeras (much longer than 100 epochs of training). When looking to visualize the output images after the augmentation techniques, the output for ZCA filter is mot looking good as well. For the above reasons, I looked for alternatives and found open cv has some api that can be used for image augmentation. I have appllied 7 different disctoprtions/enhancements to the existing training set and was able to get about 150k images (details on the spread is described in section 1 of the writeup).
+
+After the image augmentated training set with 150k samples, with the enhanced LeNet arhitecture, the results are promising. I was able to get around 96% for validation accuracy and 99.7% for training accuracy within 50 epochs.
+
+Just to try a different architecture, I've tried to create a network with inception layers after 2 conv layers and the validation accuracy reached 94% even with the original training set without any image augmentation. The code for this is in cell #9 of the notebook [notebook] (https://github.com/rnaidu02/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb). I didn't continue on this as I want to achive desired accuracy with a simple network (LeNet).
+
+With the network (modified LeNet) I chose, I was able to get a validation accuracy of 96%, and testing accuracy of 94%. From this data, I beleive that the model is not overfitting with the training set and is doing a reasonable job.
+
+
+To get around 
 If an iterative approach was chosen:
 * What was the first architecture that was tried and why was it chosen?
 * What were some problems with the initial architecture?
@@ -130,18 +162,17 @@ If a well known architecture was chosen:
 * How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
  
 
-###Test a Model on New Images
+### Test a Model on New Images
 
-####1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
+#### 1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
 
-Here are five German traffic signs that I found on the web:
+Here are ten German traffic signs that I found on the web:
 
-![alt text][image4] ![alt text][image5] ![alt text][image6] 
-![alt text][image7] ![alt text][image8]
+![Turn right][./test_imgs/img6.jpeg] ![Caution][./test_imgs/img1.jpeg] ![speed 60][./test_imgs/img7.jpeg] ![Children crossing][./test_imgs/img4.jpeg] ![Road work][./test_imgs/img_at_work.jpeg]
 
 The first image might be difficult to classify because ...
 
-####2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
+#### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
 Here are the results of the prediction:
 
@@ -156,7 +187,7 @@ Here are the results of the prediction:
 
 The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
 
-####3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
+#### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
 The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
 
